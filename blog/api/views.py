@@ -6,6 +6,14 @@ from rest_framework.generics import (
     CreateAPIView,
     RetrieveUpdateAPIView
 )
+
+from rest_framework.permissions import (
+    AllowAny,
+    IsAdminUser,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
+
 from .serializers import PostListSerializer, PostDetailSerializer, PostCreateUpdateSerializer
 from blog.models import Post
 
@@ -18,6 +26,7 @@ class PostListAPIView(ListAPIView):
 class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateUpdateSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

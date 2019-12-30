@@ -27,10 +27,10 @@ class PostDetailSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = [
+            'author',
             'title',
             'content',
             'date_posted',
-            'author',
         ]
 
 
