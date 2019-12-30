@@ -16,6 +16,7 @@ from rest_framework.permissions import (
 
 from .serializers import PostListSerializer, PostDetailSerializer, PostCreateUpdateSerializer
 from blog.models import Post
+from .permissions import IsOwnerOrReadOnly
 
 
 class PostListAPIView(ListAPIView):
@@ -32,10 +33,10 @@ class PostCreateAPIView(CreateAPIView):
         serializer.save(author=self.request.user)
 
 
-class PostUpdateAPIView(RetrieveUpdateAPIView):             # RetrieveUpdateAPIView show the previous content of
-                                                            # updating fields while UpdateAPIView doesnot
+class PostUpdateAPIView(RetrieveUpdateAPIView):             # RetrieveUpdateAPIView show the previous content of updating fields while UpdateAPIView doesnot
     queryset = Post.objects.all().order_by('-date_posted')
     serializer_class = PostCreateUpdateSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)
