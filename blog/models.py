@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 
-# in models.py we need to thikn about what we are going to save in the database
+# in models.py we need to think about what we are going to save in the database
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
