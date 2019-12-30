@@ -7,6 +7,11 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView
 )
 
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+)
+
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
@@ -22,6 +27,8 @@ from .permissions import IsOwnerOrReadOnly
 class PostListAPIView(ListAPIView):
     queryset = Post.objects.all().order_by('-date_posted')
     serializer_class = PostListSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['title', 'content', 'author__first_name']
 
 
 class PostCreateAPIView(CreateAPIView):
