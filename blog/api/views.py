@@ -54,6 +54,7 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):             # RetrieveUpdateAPIV
 class PostDeleteAPIView(DestroyAPIView):
     queryset = Post.objects.all().order_by('-date_posted')
     serializer_class = PostListSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
 
 class PostDetailAPIView(RetrieveAPIView):
