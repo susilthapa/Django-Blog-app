@@ -22,6 +22,7 @@ from rest_framework.permissions import (
 from .serializers import PostListSerializer, PostDetailSerializer, PostCreateUpdateSerializer
 from blog.models import Post
 from .permissions import IsOwnerOrReadOnly
+from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 
 
 class PostListAPIView(ListAPIView):
@@ -29,6 +30,7 @@ class PostListAPIView(ListAPIView):
     serializer_class = PostListSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'content', 'author__first_name']
+    pagination_class = PostPageNumberPagination
 
 
 class PostCreateAPIView(CreateAPIView):
