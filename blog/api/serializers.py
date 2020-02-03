@@ -66,13 +66,13 @@ class PostDetailSerializer(ModelSerializer):
 class PostListSerializer(ModelSerializer):
     url = HyperlinkedIdentityField(
         view_name='detail',
-        # lookup_field='pk'  # pk is default lookup field if slug field is used it should be mentioned here
+        # lookup_field='pk'  ( pk is default lookup field if slug field is used it should be mentioned here )
     )
     author = SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = [
+        fields = [  # fields to serialize
             'url',
             'author',
             'id',

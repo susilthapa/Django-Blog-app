@@ -1,6 +1,4 @@
-from django.http import Http404
-from rest_framework import status
-from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
@@ -56,10 +54,10 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):             # RetrieveUpdateAPIV
 class PostDeleteAPIView(DestroyAPIView):
     queryset = Post.objects.all().order_by('-date_posted')
     serializer_class = PostDetailSerializer
-    # permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-    #
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
     # def perform_destroy(self, instance):
-    #     instance.detele(author=self.request.user)
+    #     instance.delete()
 
 
 class PostDetailAPIView(RetrieveAPIView):
