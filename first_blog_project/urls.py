@@ -43,6 +43,7 @@ urlpatterns = [
 
     path('profile/', user_views.profile, name='profile'),
     path('api/posts/', include('blog.api.urls'), name='post_api'),
+    path('api/users/', include('users.api.urls'), name='users_api'),
     path('', include('blog.urls')),
 ]
 
