@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 from rest_framework.serializers import (
     CharField,
@@ -68,3 +69,48 @@ class UserCreateSerializer(ModelSerializer):
         user_obj.set_password(password)
         user_obj.save()
         return validated_data
+
+
+class UserLoginSerializer(ModelSerializer):
+    token = CharField(read_only=True, allow_blank=True)
+    username = CharField(required=False, allow_blank=True)
+    email = EmailField(label='Email Address', required=False, allow_blank=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'password',
+            'token',
+        ]
+        extra_kwargs = {
+                        'password': {'write_only': True}
+                        }
+
+    def validate(self, data):
+        user_obj = None
+        email = data.get('email')  # if email is not entered 'None' will be as default
+        username = data.get('username')
+        password = data.get('password')
+        if not email and not username:
+            raise ValidationError("A username or email is required to login")
+        user = User.objects.filter(
+            Q(username=username) |
+            Q(email=email)
+        ).distinct()  # if there two of them then get one of them
+        user = user.exclude(email__isnull=True).exclude(email__iexact='')
+        print(user)
+        if user.exists() and user.count() == 1:
+            user_obj = user.first()  # ??
+            # print(f'User OBJECT ={user_obj}')
+        else:
+            raise ValidationError("This username/email is not valid")
+
+        if user_obj:
+            if not user_obj.check_password(password): # checks whether password is correct or if password key is not there
+                raise ValidationError('Incorrect Credentials please try again!')
+        data["token"] = "SOME RANDOM TOKEN"
+        return data
+
+
