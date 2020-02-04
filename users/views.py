@@ -2,13 +2,18 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.models import User
 
 
 def register(request):
     form = UserRegisterForm(request.POST or None)
     if form.is_valid():
+        email = form.cleaned_data.get('email')
+        user_obj = User.objects.filter(email=email)
+        if user_obj.exists():
+            messages.error(request, f'User with this email is already created!!')
+            return redirect(register)
         form.save()
-        username = form.cleaned_data.get('username')
         messages.success(request, f' Your Account has been created! you are now able to log in ')
         return redirect('login')
     return render(request, 'users/register.html', {'form': form})
