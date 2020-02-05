@@ -40,8 +40,8 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name='password_reset_complete'),
 
-
     path('profile/', user_views.profile, name='profile'),
+    # path('account_activation_sent/', auth_views.)
     path('api/posts/', include('blog.api.urls'), name='post_api'),
     path('api/users/', include('users.api.urls'), name='users_api'),
     path('', include('blog.urls')),

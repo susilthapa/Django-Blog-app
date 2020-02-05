@@ -16,7 +16,7 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
 
-        img = Image.open(self.image.path) #opens the imange of current instance
+        img = Image.open(self.image.path) # opens the imange of current instance
 
         if img.height > 300 and img.width > 300:
             output_size = (300, 300)
