@@ -14,6 +14,17 @@ from rest_framework.validators import UniqueValidator
 User = get_user_model()
 
 
+class UserDetailSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+        ]
+
+
 class UserCreateSerializer(ModelSerializer):
     password2 = CharField(label='Confirm Password', write_only=True)
     email = EmailField(label='Email Address', validators=[UniqueValidator(queryset=User.objects.all())])  # also place required when not inserted email instead of blank by default

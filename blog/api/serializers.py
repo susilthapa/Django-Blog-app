@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 )
 
 from blog.models import Post
+from users.api.serializers import UserDetailSerializer
 
 
 # class PostCreateSerializer(ModelSerializer):
@@ -34,8 +35,8 @@ class PostDetailSerializer(ModelSerializer):
         view_name='delete',
         lookup_field='pk'
     )
-    author = SerializerMethodField()
-    image = SerializerMethodField()
+    author = UserDetailSerializer
+    image = SerializerMethodField(read_only=True)
     # html = SerializerMethodField()
 
     class Meta:
@@ -49,8 +50,8 @@ class PostDetailSerializer(ModelSerializer):
             'delete_url',
         ]
 
-    def get_author(self, obj):
-        return obj.author.username
+    # def get_author(self, obj):
+    #     return obj.author.username
 
     def get_image(self, obj):
         try:
@@ -68,7 +69,7 @@ class PostListSerializer(ModelSerializer):
         view_name='detail',
         # lookup_field='pk'  ( pk is default lookup field if slug field is used it should be mentioned here )
     )
-    author = SerializerMethodField()
+    author = UserDetailSerializer(read_only=True)
 
     class Meta:
         model = Post
@@ -81,5 +82,5 @@ class PostListSerializer(ModelSerializer):
             'date_posted',
         ]
 
-    def get_author(self, obj):
-        return obj.author.username
+    # def get_author(self, obj):
+    #     return obj.author.username
