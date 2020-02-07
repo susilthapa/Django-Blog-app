@@ -19,6 +19,7 @@ from django.urls import path, include
 from users import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,6 +45,7 @@ urlpatterns = [
     # path('account_activation_sent/', auth_views.)
     path('api/posts/', include('blog.api.urls'), name='post_api'),
     path('api/users/', include('users.api.urls'), name='users_api'),
+    path('api/auth/token/', obtain_jwt_token),
     path('', include('blog.urls')),
 ]
 

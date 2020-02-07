@@ -14,8 +14,13 @@ from .tokens import account_activation_token
 
 def register(request):
     form = UserRegisterForm(request.POST or None)
+
     if form.is_valid():
         user = form.save()
+        # user.refresh_from_db()
+        # image = form.cleaned_data.get('image')
+        # print(f'IMAGE={image}')
+        # user.save()
         # user.is_active = False #so that user cannot login before confirming email address
         # user.save()
         # current_site = get_current_site(request)
@@ -29,6 +34,8 @@ def register(request):
         # user.email_user(subject, message)
         messages.success(request, f' Your Account has been created! you are now able to log in ')
         return redirect('login')
+
+    print('NOT VALID!!!')
     return render(request, 'users/register.html', {'form': form})
 
 

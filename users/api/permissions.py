@@ -4,6 +4,7 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 class IsOwnerOrReadOnly(BasePermission):
     expects_authentication = False
     message = "You must be the owner of this object"
+
     # my_safe_method = ['GET', 'POST']
 
     # def has_permission(self, request, view):  # for views function i.e non-generic
@@ -14,4 +15,4 @@ class IsOwnerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):  # for generic views : for more see django-rest-framework docs
         if request.method in SAFE_METHODS:  # we can also use if request.method in SAFE_METHODS: #(like in docs)
             return True
-        return obj.author == request.user
+        return obj.user == request.user

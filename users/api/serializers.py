@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from users.models import Profile
 
 from rest_framework.serializers import (
     CharField,
@@ -123,5 +124,16 @@ class UserLoginSerializer(ModelSerializer):
                 raise ValidationError('Incorrect Credentials please try again!')
         data["token"] = "SOME RANDOM TOKEN"
         return data
+
+
+class UserProfileUpdateSerializer(ModelSerializer):
+    user = UserDetailSerializer()
+
+    class Meta:
+        model = Profile
+        fields = [
+            'image',
+            'user',
+        ]
 
 

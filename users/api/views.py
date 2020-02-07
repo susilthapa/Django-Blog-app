@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
+from users.models import Profile
+from django.db.models import Q
 from rest_framework.generics import (
     RetrieveAPIView,
     DestroyAPIView,
     CreateAPIView,
-    RetrieveUpdateAPIView
+    RetrieveUpdateAPIView,
+    get_object_or_404
 )
 
 from rest_framework.filters import (
@@ -13,10 +16,9 @@ from rest_framework.filters import (
 
 from rest_framework.permissions import (
     AllowAny,
-    IsAdminUser,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
+
 )
+from .permissions import IsOwnerOrReadOnly
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
@@ -26,12 +28,14 @@ User = get_user_model()
 from .serializers import (
     UserCreateSerializer,
     UserLoginSerializer,
+    UserProfileUpdateSerializer,
 )
 
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
     queryset = User.objects.all()
+    permission_classes = [AllowAny]
 
 
 class UserLoginAOIView(APIView):
@@ -46,4 +50,25 @@ class UserLoginAOIView(APIView):
             new_data = serializer.data
             return Response(new_data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class UserProfileUpdateAPIView(RetrieveUpdateAPIView):
+    # queryset = Profile.objects.all()
+    serializer_class = UserProfileUpdateSerializer
+    permission_classes = [IsOwnerOrReadOnly]
+    lookup_field = 'user_id'
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, user=self.request.user)
+        return obj
+
+    def get_queryset(self):
+
+        queryset = Profile.objects.filter(user=self.request.user)
+        print(f'CURRENT USER= {queryset}')
+        return queryset
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
 

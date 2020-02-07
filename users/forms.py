@@ -11,6 +11,7 @@ from .models import Profile
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
+    # image = forms.ImageField()
 
     class Meta:
         model = User

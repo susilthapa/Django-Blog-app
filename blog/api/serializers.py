@@ -35,7 +35,7 @@ class PostDetailSerializer(ModelSerializer):
         view_name='delete',
         lookup_field='pk'
     )
-    author = UserDetailSerializer
+    author = UserDetailSerializer(read_only=True)
     image = SerializerMethodField(read_only=True)
     # html = SerializerMethodField()
 
@@ -69,6 +69,11 @@ class PostListSerializer(ModelSerializer):
         view_name='detail',
         # lookup_field='pk'  ( pk is default lookup field if slug field is used it should be mentioned here )
     )
+    # profile_url = HyperlinkedIdentityField(
+    #     view_name='api-profile',
+    #     lookup_field='pk'
+    # )
+
     author = UserDetailSerializer(read_only=True)
 
     class Meta:
@@ -76,6 +81,7 @@ class PostListSerializer(ModelSerializer):
         fields = [  # fields to serialize
             'url',
             'author',
+            # 'profile_url',
             'id',
             'title',
             'content',
