@@ -4,12 +4,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.models import User
+from django.views.generic import UpdateView
 
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from .tokens import account_activation_token
+# from django.contrib.sites.shortcuts import get_current_site
+# from django.template.loader import render_to_string
+# from django.utils.http import urlsafe_base64_encode
+# from django.utils.encoding import force_bytes
+# from .tokens import account_activation_token
 
 
 def register(request):
@@ -60,3 +61,12 @@ def profile(request):
     }
 
     return render(request, 'users/profile.html', context)
+
+
+# class ProfileUpdateView(UpdateView):
+#     fields = ['user', 'image']
+#     template_name = 'users/profile.html'
+#     # success_url =
+#
+#     def get_object(self, queryset=None):
+#         return self.request.user.profile
