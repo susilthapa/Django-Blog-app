@@ -3,46 +3,33 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-from django.contrib.auth.models import User
-from django.views.generic import UpdateView
+from django.views.generic import CreateView, UpdateView
+# from django.contrib.auth import authenticate, login
+from .models import Profile
 
-# from django.contrib.sites.shortcuts import get_current_site
-# from django.template.loader import render_to_string
-# from django.utils.http import urlsafe_base64_encode
-# from django.utils.encoding import force_bytes
-# from .tokens import account_activation_token
+# from django.contrib.auth.mixins import LoginRequiredMixin
+# from shapeshifter.views import MultiModelFormView
+# from shapeshifter.mixins import MultiSuccessMessageMixin
 
 
-def register(request):
-    form = UserRegisterForm(request.POST or None)
+class SignUpView(CreateView):
+    form_class = UserRegisterForm
+    template_name = 'users/register.html'
 
-    if form.is_valid():
-        user = form.save()
-        # user.refresh_from_db()
-        # image = form.cleaned_data.get('image')
-        # print(f'IMAGE={image}')
-        # user.save()
-        # user.is_active = False #so that user cannot login before confirming email address
-        # user.save()
-        # current_site = get_current_site(request)
-        # subject = 'Active your BlogApp Account'
-        # message = render_to_string('users/account_activation_email.html', {
-        #     'user': user,
-        #     'domain': current_site.domain,
-        #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        #     'token': account_activation_token.make_token(user)
-        # })
-        # user.email_user(subject, message)
-        messages.success(request, f' Your Account has been created! you are now able to log in ')
+    def form_valid(self, form):
+        form.save()
+        # username = form.cleaned_data.get('username')
+        # email = form.cleaned_data.get('email')
+        # raw_password = form.cleaned_data.get('password1')
+        # user = authenticate(username=username, password=raw_password)
+        messages.success(self.request, f' Your Account has been created! you are now able to log in ')
         return redirect('login')
-
-    print('NOT VALID!!!')
-    return render(request, 'users/register.html', {'form': form})
 
 
 @login_required
 def profile(request):
     if request.method == 'POST':
+        print(f"POST DATA ={request.POST}")
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,
                                    request.FILES,
@@ -50,7 +37,7 @@ def profile(request):
         if p_form.is_valid() and u_form.is_valid():
             u_form.save()
             p_form.save()
-            messages.success(request, f' Your Account has been UPDATED! you are now able to log in ')
+            messages.success(request, f' Your Account has been UPDATED!')
             return redirect('profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
@@ -62,11 +49,28 @@ def profile(request):
 
     return render(request, 'users/profile.html', context)
 
-
-# class ProfileUpdateView(UpdateView):
-#     fields = ['user', 'image']
-#     template_name = 'users/profile.html'
-#     # success_url =
 #
-#     def get_object(self, queryset=None):
-#         return self.request.user.profile
+# class ProfileUpdateView(MultiModelFormView, MultiSuccessMessageMixin, LoginRequiredMixin):
+#     template_name = 'users/profile.html'
+#     queryset = Profile.objects.all()
+#     form_classes = (UserUpdateForm, ProfileUpdateForm)
+#     success_message = 'Your profile has been updated'
+#
+#     def get_instances(self):
+#         profile_instance = Profile.objects.filter(
+#             user=self.request.user,
+#         ).first(),
+#         instances = {
+#             'userform': self.request.user,
+#             'profileform': profile_instance
+#         }
+#
+#         return instances
+
+    # def get_object(self, queryset=None):
+    #     return self.request.user.profile
+    #
+    # def form_valid(self, form):
+    #     # print(form.cleaned_data)
+    #     form.save()
+    #     return super().form_valid(form)

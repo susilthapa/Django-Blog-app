@@ -11,7 +11,7 @@ from django.views.generic import (
 )
 
 
-#views handles routes
+# views handles routes
 
 
 # def home(request):
@@ -23,7 +23,7 @@ from django.views.generic import (
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/home.html'   # <app>/<model>_<view_type>.html
+    template_name = 'blog/home.html'  # <app>/<model>_<view_type>.html
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 5
@@ -31,19 +31,20 @@ class PostListView(ListView):
 
 class UserPostListView(ListView):
     model = Post
-    template_name = 'blog/user_posts.html'   # <app>/<model>_<view_type>.html
+    template_name = 'blog/user_posts.html'  # <app>/<model>_<view_type>.html i.e blog/post_list.html
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    # ordering = ['-date_posted']
     paginate_by = 5
 
     def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user)
+        # print(self.kwargs.get('username'))
+        user = get_object_or_404(User, username=self.kwargs.get('username'))  # shortcut method to get object and "self.kwargs.get('username')" to get username from url
+        return Post.objects.filter(author=user).order_by('-date_posted')
 
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/post_detail.html'
+    # template_name = 'blog/post_detail.html'  by default django looks for app_name/(model_name)_detail.html
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -55,17 +56,18 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): #UserPassesTestMixin : user should pass certain conditions
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin,
+                     UpdateView):  # UserPassesTestMixin : user should pass certain test conditions and here only author can edit his post
     model = Post
     fields = ['title', 'content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        return super().form_valid(form)
+        return super().form_valid(form)  # running form valid method in parent class which runs after setting the author
 
     def test_func(self):
-        post = self.get_object() # gives the post that we are trying to update
-        if self.request.user == post.author: # whether curent user is auther of the post
+        post = self.get_object()  # gives the post that we are trying to update
+        if self.request.user == post.author:  # whether current user is author of the post
             return True
         return False
 

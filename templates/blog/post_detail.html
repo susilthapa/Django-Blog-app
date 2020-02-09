@@ -1,6 +1,7 @@
 {% extends "blog/base.html" %}
 {% block content %}
     <article class="media content-section">
+{#    <h1 style="color: red;">{{ view.kwargs.pk }}</h1>#}
         <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}"> <!--context is object-->
         <div class="media-body">
             <div class="article-metadata">
