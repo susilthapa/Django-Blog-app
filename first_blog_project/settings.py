@@ -19,10 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = ')bgaoast05bff&-nc9$blf4rbyf+8=7hpt*dsk6ozw99@1fcje'
+#os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # blogapp007.herokuapp.com
 ALLOWED_HOSTS = ['blogapp007.herokuapp.com']
@@ -172,21 +173,3 @@ REST_FRAMEWORK = {
 
 }
 
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-
-# STATIC_URL = '/static/'
-#
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "static"),
-# )
-#
-# STATIC_ROOT = os.path.join(BASE_DIR, "live-static-files", "static-root")
-#
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-#
-# #STATIC_ROOT = "/home/cfedeploy/webapps/cfehome_static_root/"
-#
-# MEDIA_URL = "/media/"
-#
-# MEDIA_ROOT = os.path.join(BASE_DIR, "live-static-files", "media-root")
