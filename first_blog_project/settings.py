@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ')bgaoast05bff&-nc9$blf4rbyf+8=7hpt*dsk6ozw99@1fcje'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # for deployment otherwise true
+DEBUG = True
 
 ALLOWED_HOSTS = ['blogapp007.herokuapp.com']
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',       # for production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
