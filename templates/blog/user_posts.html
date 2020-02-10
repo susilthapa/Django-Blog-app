@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %}
 {% block content %}
    <h1>Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1> {# get the username that is passed into url#}
-    # "view.kwargs.username" to get username from url
+{#    "view.kwargs.username" to get username from url#}
     {% for post in posts %}
     <article class="media content-section">
         <img class="rounded-circle article-img" src="{{post.author.profile.image.url}}">

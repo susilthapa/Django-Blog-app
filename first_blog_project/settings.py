@@ -24,6 +24,7 @@ SECRET_KEY = ')bgaoast05bff&-nc9$blf4rbyf+8=7hpt*dsk6ozw99@1fcje'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# blogapp007.herokuapp.com
 ALLOWED_HOSTS = ['blogapp007.herokuapp.com']
 
 # Application definition
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',       # for production
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # for production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,9 +125,13 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'live-static', 'static-root')  # for production
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'live-static', 'media-root')  # for production
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -163,5 +168,25 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # does not need to mention in the views
     ]
+
+
 }
 
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+# STATIC_URL = '/static/'
+#
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "static"),
+# )
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, "live-static-files", "static-root")
+#
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+#
+# #STATIC_ROOT = "/home/cfedeploy/webapps/cfehome_static_root/"
+#
+# MEDIA_URL = "/media/"
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, "live-static-files", "media-root")
