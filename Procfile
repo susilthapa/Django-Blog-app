@@ -1,1 +1,1 @@
-web: gunicorn first_blog.wsgi
+web: gunicorn first_blog_project.wsgi
