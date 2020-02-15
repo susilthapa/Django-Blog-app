@@ -26,7 +26,7 @@ SECRET_KEY = ')bgaoast05bff&-nc9$blf4rbyf+8=7hpt*dsk6ozw99@1fcje'
 DEBUG = True
 
 # blogapp007.herokuapp.com
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic'
     'django.contrib.staticfiles',
     'rest_framework',
     'shapeshifter',
@@ -49,7 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # for production
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # for production
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,7 +129,7 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'live-static', 'static-root')  # for production
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'live-static', 'media-root')  # for production
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
