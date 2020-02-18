@@ -22,6 +22,7 @@ parso==0.5.1
 pickleshare==0.7.5
 Pillow==6.1.0
 prompt-toolkit==2.0.9
+psycopg2==2.8.4
 Pygments==2.4.2
 PyJWT==1.7.1
 python-dateutil==1.5
@@ -34,4 +35,3 @@ traitlets==4.3.2
 urllib3==1.25.6
 wcwidth==0.1.7
 whitenoise==5.0.1
-psycopg2==2.7.1
