@@ -26,7 +26,7 @@ SECRET_KEY = ')bgaoast05bff&-nc9$blf4rbyf+8=7hpt*dsk6ozw99@1fcje'
 DEBUG = True
 
 # blogapp007.herokuapp.com
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
