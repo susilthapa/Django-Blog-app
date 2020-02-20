@@ -47,7 +47,7 @@ class UserPostListView(ListView):
         # if qs:
         #     return qs
         # else:
-        #     raise Http404(f"User with username {self.kwargs['username']} does not exists!")
+        #     raise Http404(f"User with username {self.kwargs['username']} does not exists")
             
 
 class PostDetailView(DetailView):
