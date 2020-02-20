@@ -10,7 +10,7 @@ from django.views.generic import (
     DeleteView
 )
 
-
+from django.http import HttpResponseNotFound, Http404
 # views handles routes
 
 
@@ -37,10 +37,18 @@ class UserPostListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        # print(self.kwargs.get('username'))
+        # following either method can be applied:
+        
         user = get_object_or_404(User, username=self.kwargs.get('username'))  # shortcut method to get object and "self.kwargs.get('username')" to get username from url
+        print(user.id)  # user is user object
         return Post.objects.filter(author=user).order_by('-date_posted')
-
+        
+        # qs = Post.objects.filter(author__username=self.kwargs['username'])
+        # if qs:
+        #     return qs
+        # else:
+        #     raise Http404(f"User with username {self.kwargs['username']} does not exists!")
+            
 
 class PostDetailView(DetailView):
     model = Post
