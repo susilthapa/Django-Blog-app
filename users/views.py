@@ -52,25 +52,10 @@ def profile(request):
 #
 # class ProfileUpdateView(MultiModelFormView, MultiSuccessMessageMixin, LoginRequiredMixin):
 #     template_name = 'users/profile.html'
-#     queryset = Profile.objects.all()
-#     form_classes = (UserUpdateForm, ProfileUpdateForm)
+#     model = Profile
+#     form_class =
 #     success_message = 'Your profile has been updated'
 #
-#     def get_instances(self):
-#         profile_instance = Profile.objects.filter(
-#             user=self.request.user,
-#         ).first(),
-#         instances = {
-#             'userform': self.request.user,
-#             'profileform': profile_instance
-#         }
-#
-#         return instances
-
-    # def get_object(self, queryset=None):
-    #     return self.request.user.profile
-    #
     # def form_valid(self, form):
-    #     # print(form.cleaned_data)
-    #     form.save()
+    #     form.instance.author =self.request.user
     #     return super().form_valid(form)

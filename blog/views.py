@@ -38,7 +38,7 @@ class UserPostListView(ListView):
 
     def get_queryset(self):
         # following either method can be applied:
-        
+
         user = get_object_or_404(User, username=self.kwargs.get('username'))  # shortcut method to get object and "self.kwargs.get('username')" to get username from url
         print(user.id)  # user is user object
         return Post.objects.filter(author=user).order_by('-date_posted')
@@ -48,7 +48,7 @@ class UserPostListView(ListView):
         #     return qs
         # else:
         #     raise Http404(f"User with username {self.kwargs['username']} does not exists")
-            
+
 
 class PostDetailView(DetailView):
     model = Post
