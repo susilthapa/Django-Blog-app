@@ -7,3 +7,5 @@
 <li>View others posts</li>
 
 <li>View and Update profile</li>
+
+<li>Filter posts by author name</li>
