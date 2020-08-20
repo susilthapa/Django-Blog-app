@@ -34,8 +34,12 @@
             <div class="comment-display">
                 <img class="rounded-circle article-img" src="{{post.comments.first.author.profile.image.url}}">
                 <div class="comment">
-                    <h5><a class="mr-2" href="{% url 'user-posts' post.comments.first.author.username %}">{{cmt.author.username}}</a></h5>
-                    
+                    <div class="comment-header">
+                        <h5>
+                            <a class="mr-2" href="{% url 'user-posts' post.comments.first.author.username %}">{{cmt.author.username}}</a>
+                        </h5>
+                        <span>{{cmt.created_date|date:"M j, Y"}}</span>
+                    </div>
                     <p>{{cmt.text|slice:"150"}}{% if cmt.text|length > 200 %}...{% endif %}</p>
                 </div>
             </div>
@@ -143,17 +147,25 @@
            let div_comment = document.createElement('div')
            div_comment.classList.add('comment')
 
-           let heading = document.createElement('H5')
+           //Comment header
+           let comment_header = document.createElement('div')
+           comment_header.classList.add('comment-header')
+
+           let h5_heading = document.createElement('H5')
            let link = document.createElement('a')
            link.classList.add('mr-2')
            link.href = image_url
            link.text = author
-           heading.appendChild(link)
+           let span = document.createElement('span')
+           span.innerHTML = data.date
+           h5_heading.appendChild(link)
+           comment_header.appendChild(h5_heading)
+           comment_header.appendChild(span)
 
            let p_text = document.createElement('p')
            p_text.innerHTML = new_text
 
-           div_comment.appendChild(heading)
+           div_comment.appendChild(comment_header)
            div_comment.appendChild(p_text)
 
            div_comment_display.appendChild(img)

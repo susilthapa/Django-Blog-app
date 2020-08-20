@@ -153,9 +153,11 @@ a.article-title:hover {
   width: 40px;
 }
 
+
 .comment-display a{
   text-decoration: none;
   color: black;
+  padding-right: 20px;
 }
 
 .comment-display p{
@@ -167,8 +169,21 @@ a.article-title:hover {
 .comment{
   background-color: rgba(128,128,128, .2);
   padding: 3px;
+  margin-right: 3px;
   color: black;
   border-radius: 10px;
+}
+
+.comment .comment-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.comment-header span{
+  font-weight: 700;
+  font-size: 11px;
+  opacity: 0.8;
 }
 
 .post-comment{

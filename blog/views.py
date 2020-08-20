@@ -46,17 +46,20 @@ class PostListView(ListView):
         comment.post = Post.objects.get(id=id)
         comment.text = text
         comment.save()
-        
+
         new_comment = Comment.objects.filter(post__id=id).first()
         author = new_comment.author.username
         image = new_comment.author.profile.image.url
         new_text = new_comment.text
+        date = new_comment.created_date.strftime("%b %d, %Y")
+        print(date)
 
         data = {
             'count': Comment.objects.filter(post__id=id).count(),
             'author': author,
             'image': image,
-            'text': text
+            'text': text,
+            'date': date
         }
         # data = serializers.serialize('json', data)
         # return HttpResponse(data, content_type="application/json")
