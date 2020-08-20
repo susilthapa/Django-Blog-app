@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic.edit import FormMixin
 from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
@@ -12,6 +13,11 @@ from django.views.generic import (
 from django.utils import timezone
 import datetime
 from django.http import HttpResponseNotFound, Http404
+from django.http import JsonResponse, HttpResponse
+import json
+from django.core import serializers
+
+from .forms import CommentCreationForm
 # views handles routes
 
 
@@ -28,7 +34,33 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 5
+    # form_class = CommentCreationForm
 
+    def post(self, request, *args, **kwargs):
+        data = json.loads(self.request.body)
+        id = data['id']
+        text = data['comment']
+        # print(f'ID= {id}')
+        comment = Comment()
+        comment.author = self.request.user            
+        comment.post = Post.objects.get(id=id)
+        comment.text = text
+        comment.save()
+        
+        new_comment = Comment.objects.filter(post__id=id).first()
+        author = new_comment.author.username
+        image = new_comment.author.profile.image.url
+        new_text = new_comment.text
+
+        data = {
+            'count': Comment.objects.filter(post__id=id).count(),
+            'author': author,
+            'image': image,
+            'text': text
+        }
+        # data = serializers.serialize('json', data)
+        # return HttpResponse(data, content_type="application/json")
+        return JsonResponse(data, safe=False)
 
 class UserPostListView(ListView):
     model = Post
@@ -94,3 +126,13 @@ class PostDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['text']
+
+    def form_valid(self, form, id):
+        form.instance.author = self.request.user
+        form.instance.post = get_object_or_404(Post, id=id)
+        return super().form_valid(form)

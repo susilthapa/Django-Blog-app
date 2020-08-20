@@ -27,6 +27,8 @@ class Comment(models.Model):
 	created_date = models.DateTimeField(editable=False)
 	edited = models.DateTimeField(editable=False, null=True)
 
+	class Meta:
+		ordering = ['-created_date']
 
 	def __str__(self):
 		return self.text[:20]
