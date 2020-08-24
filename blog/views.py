@@ -12,12 +12,14 @@ from django.views.generic import (
 )
 from django.utils import timezone
 import datetime
-from django.http import HttpResponseNotFound, Http404
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponseNotFound, Http404, HttpResponseForbidden, JsonResponse, HttpResponse
 import json
 from django.core import serializers
 
 from .forms import CommentCreationForm
+
+from django.contrib.auth.decorators import login_required
+
 # views handles routes
 
 
@@ -40,7 +42,7 @@ class PostListView(ListView):
         data = json.loads(self.request.body)
         id = data['id']
         text = data['comment']
-        # print(f'ID= {id}')
+        print(f'POST ID= {id}')
         comment = Comment()
         comment.author = self.request.user            
         comment.post = Post.objects.get(id=id)
@@ -139,3 +141,54 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         form.instance.post = get_object_or_404(Post, id=id)
         return super().form_valid(form)
+
+# class CommentDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
+#     model = Comment
+
+#     id = 0
+#     def get(self, request, *args, **kwargs):
+#         return self.post(request, *args, **kwargs)
+
+
+#     def post(self, request, *args, **kwargs):
+#         data = json.loads(self.request.body)
+#         id = (data['id'])
+#         print(f'DELETE {data}')
+#         return id
+
+#     def test_func(self):
+#         commant = self.get_object(id)
+#         if self.request.user == commant.author:
+#             return True
+#         return False
+
+#     def get_object(self, id):
+#         print(f'DELETE {id}')
+#         return self.get_queryset().filter(id=id).get()
+
+#     def get_success_url(self):
+#         return self.request.path
+
+
+@login_required
+def delete_comment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        id = data['id']
+        print(f'DELETE ID = {id}')
+        comment = Comment.objects.get(id=id)
+        post_id = comment.post.id
+        print(f'REQ USER {request.user}')
+        print(f'CMT AUTHOR {comment.author}')
+        if request.user == comment.author:
+            comment.delete()
+            data = {
+                'count': Comment.objects.filter(post__id = post_id).count()
+            }
+            return  JsonResponse(data, safe=False)
+        else:
+
+            return  HttpResponseForbidden()
+
+
+

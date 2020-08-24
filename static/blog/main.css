@@ -186,6 +186,13 @@ a.article-title:hover {
   opacity: 0.8;
 }
 
+#comment-delete{
+  display: none;
+  float: right;
+  padding: 1px;
+  margin: 3px 5px 3px 0;
+  border-radius: 5px;
+}
 .post-comment{
   width: 100%;
   border-top: 1px solid;
@@ -222,3 +229,27 @@ a.article-title:hover {
 #delete_update{
   margin-left: 74%;
 }
+
+#see_all, #less{
+  display: flex;
+  align-self: flex-end;
+  padding: 5px;
+  outline: none;
+  background: none;
+  border: none;
+}
+#less{
+  display: none;
+}
+
+.dotted{
+  opacity: .7;
+  cursor: pointer;
+}
+.dotted:hover{
+  opacity: 1;
+}
+.dot{
+  line-height: .3;
+}
+

@@ -3,7 +3,7 @@
     <article class="media content-section">
 {#    <h1 style="color: red;">{{ view.kwargs.pk }}</h1>#}
         <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}"> <!--context is object-->
-        <div class="media-body">
+        <div class="media-body border-bottom border-secondary">
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
                 <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
@@ -17,6 +17,68 @@
                 {% endif %}
             </div>
         </div>
+
+        <div class="comment-div">   
+            {% for cmt in object.comments.all %}
+            <div class="comment-display">
+                <img class="rounded-circle article-img" src="{{post.comments.first.author.profile.image.url}}">
+                <div class="comment">
+                    <div class="comment-header">
+                        <h5>
+                            <a class="mr-2" href="{% url 'user-posts' post.comments.first.author.username %}">{{cmt.author.username}}</a>
+                        </h5>
+                        <span>{{cmt.created_date|date:"M j, Y"}}</span>
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                        <p style="flex:1;">{{cmt.text|slice:"150"}}{% if cmt.text|length > 200 %}...{% endif %}</p>
+                        <div class="d-flex flex-column p-2 mb-2 dotted" style="cursor:pointer;">
+                            <span class="dot">.</span>
+                            <span class="dot">.</span>
+                            <span class="dot">.</span>
+                        </div>
+                    </div>
+                    <button value="{{cmt.id}}" id='comment-delete' class="btn btn-outline-danger delete_comment">Delete</button>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        {% if object.comments.all.count > 2 %}
+        
+            <button class="text-primary" id="see_all">see all comments</button>
+            <button class="text-primary" id="less" >see less comments</button>
+
+        {% endif %}
+        
+        <div class="post-comment">
+            <form action="" id="cmt-form">
+                {% csrf_token %}
+                <input type="text" id="comment" name="comment" value="" placeholder="Add a comment" autocomplete="off">
+                <button type="submit"  value={{post.id}} class="cmt-btn" disabled="true">Post</button>
+            </form>
+        </div>
     </article>
+
+    {% block extra_script %}
+    <script>
+        const all = document.getElementById('see_all')
+        const less = document.getElementById('less')
+        const cmt_div = document.querySelector('.comment-div')
+
+        all.addEventListener('click', function(){
+                this.style.display= 'none';
+                less.style.display= 'flex';
+                cmt_div.style.maxHeight = '100%';
+                cmt_div.style.overflowY = 'visible';
+            })
+
+        less.addEventListener('click', function(){
+                this.style.display= 'none';
+                all.style.display= 'flex';
+                cmt_div.style.maxHeight = '155px';
+                cmt_div.style.overflowY = 'scroll';
+        })
+    </script>
+    {% endblock extra_script%}
 
 {% endblock content %}

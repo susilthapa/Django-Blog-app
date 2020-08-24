@@ -40,7 +40,19 @@
                         </h5>
                         <span>{{cmt.created_date|date:"M j, Y"}}</span>
                     </div>
-                    <p>{{cmt.text|slice:"150"}}{% if cmt.text|length > 200 %}...{% endif %}</p>
+                    <div class="d-flex flex-row align-items-center">
+                        <p style="flex:1;">{{cmt.text|slice:"150"}}{% if cmt.text|length > 200 %}...{% endif %}</p>
+                        
+                    {% if user == cmt.author %}
+                        <div class="d-flex flex-column p-2 mb-2 dotted">
+                            <span class="dot">.</span>
+                            <span class="dot">.</span>
+                            <span class="dot">.</span>
+                        </div>
+                    {% endif %}
+                    <!-- <h1>{{user}}</h1> -->
+                    </div>                      
+                      <button value="{{cmt.id}}" id='comment-delete' class="btn btn-outline-danger delete_comment">Delete</button>
                 </div>
             </div>
             {% endfor %}
@@ -50,7 +62,7 @@
             <form action="" id="cmt-form">
                 {% csrf_token %}
                 <input type="text" id="comment" name="comment" value="" placeholder="Add a comment" autocomplete="off">
-                <button type="submit"  value={{post.id}} class="cmt-btn">Post</button>
+                <button type="submit"  value={{post.id}} class="cmt-btn" disabled="true">Post</button>
             </form>
         </div>
     </article>
@@ -78,107 +90,9 @@
 {% endif %}
 
 {% block extra_script %}
-<script>
-    const form = document.getElementById('cmt-form')
-    const btn = document.getElementsByClassName('cmt-btn')
-    let comments = document.querySelectorAll('#comment')
-
-    for(let i=0; i < comments.length; i++){
-        comments[i].addEventListener('keyup', function(){
-
-            if(this.value.length>0){
-                this.nextElementSibling.style.opacity = 1;
-                this.nextElementSibling.disabled=false;   
-            }else{
-                this.nextElementSibling.style.opacity = .6;
-                this.nextElementSibling.disabled=true;
-            }
-        })
-    }
-
-    for(let i=0; i < btn.length; i++){
-        btn[i].addEventListener('click', function(e){
-            e.preventDefault()
-            let url = '/'
-            let text = this.previousElementSibling.value
-            if(text.length<1){
-                text.innerHTML = "Please enter something"
-                return false
-            }
-            let id = this.value
-
-            // console.log(this.parentNode.parentNode.previousElementSibling)
-            let comment_div = this.parentNode.parentNode.previousElementSibling
-            let comment_section = comment_div.previousElementSibling
-            let p_count = comment_section.children[1].children[0]
-
-            fetch(url, {
-                method: 'POST',
-                headers:{
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body:JSON.stringify({'comment': text, 'id':id})
-            })
-             .then((response)=>{
-                return response.json()
-            })
-             .then((data)=>{
-
-            console.log(data)
-
-            // Comments Count
-            p_count.innerHTML = data.count
-
-            // processing response data
-            let new_text = data.text.length <= 150? data.text:data.text.slice(0,150)+"..."
-            let image_url = "{% url 'user-posts' 'username' %}".replace('username', data.author)
-            let author = data.author
-           
-           //Creating Elements
-           let div_comment_display = document.createElement('div')
-           div_comment_display.classList.add("comment-display")
-
-           let img = document.createElement('img')
-           img.classList.add("rounded-circle")
-           img.classList.add("article-img")
-           img.src = data.image
-
-           let div_comment = document.createElement('div')
-           div_comment.classList.add('comment')
-
-           //Comment header
-           let comment_header = document.createElement('div')
-           comment_header.classList.add('comment-header')
-
-           let h5_heading = document.createElement('H5')
-           let link = document.createElement('a')
-           link.classList.add('mr-2')
-           link.href = image_url
-           link.text = author
-           let span = document.createElement('span')
-           span.innerHTML = data.date
-           h5_heading.appendChild(link)
-           comment_header.appendChild(h5_heading)
-           comment_header.appendChild(span)
-
-           let p_text = document.createElement('p')
-           p_text.innerHTML = new_text
-
-           div_comment.appendChild(comment_header)
-           div_comment.appendChild(p_text)
-
-           div_comment_display.appendChild(img)
-           div_comment_display.appendChild(div_comment) 
-
-           console.log(div_comment_display)
-           comment_div.insertBefore(div_comment_display, comment_div.childNodes[0])
-        })
-         .catch(error=>console.log(error))
-
-    })
-    }
-</script>
+    <script>
+      // console.log("{{user}}")
+    </script>
 {% endblock extra_script%}
 
 {% endblock content %}
