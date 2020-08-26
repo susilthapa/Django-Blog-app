@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+
 from django.views.generic.edit import FormMixin
+from .forms import CommentCreationForm
+
 from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
@@ -16,27 +19,32 @@ from django.http import HttpResponseNotFound, Http404, HttpResponseForbidden, Js
 import json
 from django.core import serializers
 
-from .forms import CommentCreationForm
+from django.db.models.aggregates import Count
 
-from django.contrib.auth.decorators import login_required
-
-# views handles routes
+from .models import Post, Comment
 
 
-# def home(request):
-#     context = {
-#         'posts': Post.objects.all()
-#     }
-#     return render(request, 'blog/home.html', context)
 
 
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html'  # <app>/<model>_<view_type>.html
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    # ordering = ['-date_posted']
     paginate_by = 5
     # form_class = CommentCreationForm
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        key = self.kwargs.get('key')
+        if key == 'most_liked':
+            return qs.annotate(like_count=Count('likes')).order_by('-like_count')
+        elif key == 'most_commented':
+            return qs.annotate(comment_count=Count('comments')).order_by('-comment_count')
+        else:
+            return qs
+
+
 
     def post(self, request, *args, **kwargs):
         data = json.loads(self.request.body)

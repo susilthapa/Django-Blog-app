@@ -22,7 +22,9 @@
   let likes = document.querySelectorAll('.like')
   let likes_count = document.querySelectorAll('.likes-count')
 
-  console.log(likes_count)
+  // let posts = document.querySelectorAll('.filter-posts li')
+
+
   // console.log(comment_display)
 
     for(let i=0; i < comments.length; i++){
@@ -250,3 +252,21 @@ for(let i = 0; i < likes.length; i++){
   })
 }
 
+
+
+// Filter Posts
+
+
+// for (let i=0; i<posts.length; i++){
+//   posts[i].addEventListener('click', function(){
+//     let key = this.dataset.key 
+//     console.log(key)
+//     let url = `/filter-posts/${key}/`
+//     fetch(url,{
+//       header:{
+//         'Content-Type': 'application/json'
+//       },
+//     })
+//       .then(resp=>console.log(resp.json()))
+//   })
+// }

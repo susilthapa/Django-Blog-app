@@ -12,9 +12,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #444444;
 }
 
+
 ul {
   margin: 0;
 }
+
 
 .bg-steel {
   background-color: #2aabd2;
@@ -31,6 +33,7 @@ ul {
 .site-header .navbar-nav .nav-link.active {
   font-weight: 500;
 }
+
 
 .content-section {
   background: #ffffff;

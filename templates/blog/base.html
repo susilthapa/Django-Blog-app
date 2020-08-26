@@ -80,13 +80,13 @@
         </div>
         <div class="col-md-4">
           <div class="content-section">
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
+            <h3>Filter Posts</h3>
+            <p class='text-muted'>You can filter posts based on the following tags.
+              <ul class="filter-posts list-group">
+                <li data-key="most_liked" class="list-group-item list-group-item-light"><a href="{% url 'filter_posts' 'most_liked' %}">Most Liked Posts</a></li>
+                <li data-key="most_commented" class="list-group-item list-group-item-light"><a href="{% url 'filter_posts' 'most_commented' %}">Most commented Posts</li>
+                <li data-key="latest" class="list-group-item list-group-item-light"><a href="{% url 'filter_posts' 'latest' %}">Latest Posts</li>
+                <li class="list-group-item list-group-item-light"><a href="#">Calendars</a></li>
               </ul>
             </p>
           </div>
