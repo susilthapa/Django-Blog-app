@@ -14,9 +14,15 @@
 
   // NodeList to Array
   let array = [...dotted]
-  console.log(array)
+  // console.log(array)
 
-  // console.log(delete_comment)
+
+  //Like variables
+
+  let likes = document.querySelectorAll('.like')
+  let likes_count = document.querySelectorAll('.likes-count')
+
+  console.log(likes_count)
   // console.log(comment_display)
 
     for(let i=0; i < comments.length; i++){
@@ -208,3 +214,39 @@
         .catch(err=> console.log(err))
     })
   }
+
+
+
+
+// Like 
+
+for(let i = 0; i < likes.length; i++){
+  likes[i].addEventListener('click', function(){
+    let id = this.dataset.id
+    url = '/like-post/'
+
+    fetch(url, {
+      'method': 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken,
+      },
+      body: JSON.stringify({'id': id})
+    })
+      .then(resp=>{
+        console.log(resp)
+        return resp.json()
+      })
+      .then(data=> {
+        console.log(data)
+        if (data.liked) {
+          this.style.color = '#007bff';
+        }else{
+          this.style.color = 'black';
+        }
+        likes_count[i].innerHTML = data.total_likes
+      })
+
+  })
+}
+

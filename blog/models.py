@@ -12,9 +12,15 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     deleted = models.BooleanField(default=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
 
     def __str__(self):
         return self.title
+
+    @property
+    def total_likes(self):
+    	return self.likes.count()
+    
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})

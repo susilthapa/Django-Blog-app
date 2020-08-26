@@ -41,15 +41,16 @@ class PostListView(ListView):
     def post(self, request, *args, **kwargs):
         data = json.loads(self.request.body)
         id = data['id']
+        post = get_object_or_404(Post, id=id)
         text = data['comment']
         print(f'POST ID= {id}')
         comment = Comment()
         comment.author = self.request.user            
-        comment.post = Post.objects.get(id=id)
+        comment.post = post
         comment.text = text
         comment.save()
 
-        new_comment = Comment.objects.filter(post__id=id).first()
+        new_comment = post.comments.first()
         author = new_comment.author.username
         image = new_comment.author.profile.image.url
         new_text = new_comment.text
@@ -57,7 +58,7 @@ class PostListView(ListView):
         print(date)
 
         data = {
-            'count': Comment.objects.filter(post__id=id).count(),
+            'count': post.comments.count(),
             'author': author,
             'image': image,
             'text': text,
@@ -189,6 +190,26 @@ def delete_comment(request):
         else:
 
             return  HttpResponseForbidden()
+
+
+@login_required
+def like_post(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        id = data['id']
+        post = get_object_or_404(Post, id=id)
+        liked=False
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+            liked=True
+        data = {
+            'total_likes': post.total_likes,
+            'liked': liked
+        }
+
+        return JsonResponse(data, safe=False)
 
 
 
