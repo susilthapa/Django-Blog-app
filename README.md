@@ -10,7 +10,7 @@
 
 <li>Filter posts by author name</li>
 
-<li>Comment on the post and delete comment</li>>
+<li>Comment on the post and delete comment</li>
 
 <li>Like and unlike posts</li>
 
