@@ -4,7 +4,7 @@
     {% for post in posts %}
     <article class="media content-section">
         <div class="post w-100">
-            <img class="rounded-circle article-img" src="{{post.author.profile.image.url}}">
+            <img class="rounded-circle article-img" src="{{post.author.profile.image_url}}">
             <div class="media-body">
                 <div class="article-metadata">
                     <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
@@ -32,7 +32,7 @@
          <div class="comment-div">   
             {% for cmt in post.comments.all %}
             <div class="comment-display">
-                <img class="rounded-circle article-img" src="{{post.comments.first.author.profile.image.url}}">
+                <img class="rounded-circle article-img" src="{{post.comments.first.author.profile.image_url}}">
                 <div class="comment">
                     <div class="comment-header">
                         <h5>
