@@ -10,7 +10,7 @@ from django.shortcuts import reverse
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    image_url = models.URLField(max_length=200, blank=True, null=True)
+    image_url = models.URLField(max_length=200, default="https://firebasestorage.googleapis.com/v0/b/django-blog-c1e8b.appspot.com/o/jokllpaper-hd-1080p.jpg?alt=media&token=366158cf-76a0-41fe-9d9b-e82c16fb3a46")
 
     def __str__(self):
         return f'{self.user.username} Profile'
