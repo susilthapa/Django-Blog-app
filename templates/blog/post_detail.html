@@ -2,7 +2,7 @@
 {% block content %}
     <article class="media content-section">
 {#    <h1 style="color: red;">{{ view.kwargs.pk }}</h1>#}
-        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}"> <!--context is object-->
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image_url }}"> <!--context is object-->
         <div class="media-body border-bottom border-secondary w-100">
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
@@ -36,11 +36,11 @@
         <div class="comment-div">   
             {% for cmt in object.comments.all %}
             <div class="comment-display">
-                <img class="rounded-circle article-img" src="{{post.comments.first.author.profile.image.url}}">
+                <img class="rounded-circle article-img" src="{{cmt.author.profile.image_url}}">
                 <div class="comment">
                     <div class="comment-header">
                         <h5>
-                            <a class="mr-2" href="{% url 'user-posts' post.comments.first.author.username %}">{{cmt.author.username}}</a>
+                            <a class="mr-2" href="{% url 'user-posts' cmt.author.username %}">{{cmt.author.username}}</a>
                         </h5>
                         <span>{{cmt.created_date|date:"M j, Y"}}</span>
                     </div>
