@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from users.models import Profile
 
+from rest_framework.authtoken.models import Token
+
 from rest_framework.serializers import (
     CharField,
     EmailField,
@@ -27,7 +29,7 @@ class UserDetailSerializer(ModelSerializer):
 
 
 class UserCreateSerializer(ModelSerializer):
-    password2 = CharField(label='Confirm Password', write_only=True)
+    password2 = CharField(label='Confirm Password', write_only=True, style={'input_type': 'password'})
     email = EmailField(label='Email Address', validators=[UniqueValidator(queryset=User.objects.all())])  # also place required when not inserted email instead of blank by default
 
     class Meta:
@@ -39,7 +41,7 @@ class UserCreateSerializer(ModelSerializer):
             'password2',
         ]
         extra_kwargs = {
-                        'password': {'write_only': True}
+                        'password': {'write_only': True, 'style':{'input_type': 'password'}}
                         }
 
     # def validate(self, data):
@@ -49,8 +51,8 @@ class UserCreateSerializer(ModelSerializer):
     #         raise ValidationError("User with this email already exists!")
 
     def validate_password(self, value):
-        data = self.get_initial()
-        # print(f"INITIAL VALUE = {value}")
+        data = self.get_initial() # ordered list above data as of tuples
+        # print(f"INITIAL VALUE = {data}") 
         password1 = data.get("password2")
         email = data.get('email')
         # print(f"Password 2 = {password1}")
@@ -61,10 +63,10 @@ class UserCreateSerializer(ModelSerializer):
 
     def validate_password2(self, value):  # two validation function because for two password fields to show error
         data = self.get_initial()
-        print(f"INITIAL VALUE = {value}")
+        # print(f"INITIAL VALUE = {value}")
         password1 = data.get("password")
         password2 = value
-        print(value)
+        # print(value)
         if password1 != password2:
             raise ValidationError("Password must match!")
         return value
@@ -80,6 +82,7 @@ class UserCreateSerializer(ModelSerializer):
         )
         user_obj.set_password(password)
         user_obj.save()
+        Token.objects.create(user=user_obj)
         return validated_data
 
 
@@ -97,7 +100,7 @@ class UserLoginSerializer(ModelSerializer):
             'token',
         ]
         extra_kwargs = {
-                        'password': {'write_only': True}
+                        'password': {'write_only': True, 'style':{'input_type': 'password'}}
                         }
 
     def validate(self, data):
@@ -122,7 +125,7 @@ class UserLoginSerializer(ModelSerializer):
         if user_obj:
             if not user_obj.check_password(password): # checks whether password is correct or if password key is not there
                 raise ValidationError('Incorrect Credentials please try again!')
-        data["token"] = "SOME RANDOM TOKEN"
+        data["token"] = Token.objects.get_or_create(user=user_obj)
         return data
 
 

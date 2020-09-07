@@ -44,8 +44,6 @@ class PostListView(ListView):
         else:
             return qs
 
-
-
     def post(self, request, *args, **kwargs):
         data = json.loads(self.request.body)
         id = data['id']
@@ -88,7 +86,7 @@ class UserPostListView(ListView):
 
         user = get_object_or_404(User, username=self.kwargs.get('username'))  # shortcut method to get object and "self.kwargs.get('username')" to get username from url
         print(user.id)  # user is user object
-        return Post.objects.filter(author=user).order_by('-date_posted')
+        return Post.objects.filter(author=user)
         
         # qs = Post.objects.filter(author__username=self.kwargs['username'])
         # if qs:
@@ -166,8 +164,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 #         return id
 
 #     def test_func(self):
-#         commant = self.get_object(id)
-#         if self.request.user == commant.author:
+#         comment = self.get_object(id)
+#         if self.request.user == comment.author:
 #             return True
 #         return False
 

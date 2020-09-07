@@ -20,9 +20,15 @@ class Post(models.Model):
         return self.title
 
     @property
+    def short_description(self):
+    	return self.content[:300]
+    
+    @property
     def total_likes(self):
     	return self.likes.count()
-    
+
+    # def get_comments(self):
+    # 	return [for comment in self.comments.all()]
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})

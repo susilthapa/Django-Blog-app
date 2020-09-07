@@ -33,8 +33,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'rest_framework',
-    'shapeshifter',
+    'rest_framework.authtoken' # New!
+    # 'shapeshifter',
 ]
 
 MIDDLEWARE = [
@@ -148,8 +150,9 @@ REST_FRAMEWORK = {
     #     'rest_framework.parsers.JSONParser',
     # ]
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'rest_framework.authentication.BasicAuthentication'
     ],
 
