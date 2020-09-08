@@ -1,6 +1,44 @@
 {% extends "blog/base.html" %}
+{% load static %}
+{% block extra_css%}
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/about.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    <h1>About!!</h1>
+    <div class="about-section paddingTB60 gray-bg">
+        <div class="container">
+            <div class="row">
+				<div class="col-md-9 col-sm-8">
+					<div class="about-title clearfix">
+						<h1>About <span>Meroblogpost</span></h1>
+						<h3>Django/Html/Css/Bootstrap </h3>
+						<ul style="margin-left: 20px;">
+							<li>User can sign in , create, update and delete posts</li>
+							<li>View others posts</li>
+							<li>View and Update profile(django signals)</li>
+							<li>Filter posts by author name</li>
+							<li>Comment on the post and delete comment</li>
+							<li>Like and unlike posts</li>
+							<li>Sidebar: User can filter post: most liked posts, most commented posts and latest posts</li>
+						</ul>
+						<div class="about-icons"> 
+                            <ul >
+                                <li><a href="#"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a> </li>
+                                <li><a href="#"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a> </li>
+                                <li> <a href="#"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a> </li>
+                                <li> <a href="#"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a> </li>
+                            </ul>       
+               			</div>
+					</div>
+				</div>
+				<div class="col-md-5 col-sm-6">
+					<div class="about-img">
+						<img src="https://devitems.com/preview/appmom/img/mobile/2.png" alt="">
+					</div>
+				</div>	
+            </div>
+        </div>
+     </div>
 
 {% endblock content %}

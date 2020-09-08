@@ -137,7 +137,7 @@ class PostDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
 
 
 def about(request):
-    return render(request, 'blog/about.html', {'title': 'About'})
+    return render(request, 'blog/about.html')
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):

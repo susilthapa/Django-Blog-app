@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{% static 'blog/main.css' %}">
+    {% block extra_css%}{% endblock %}
     <script>
         function getCookie(name) {
         let cookieValue = null;
@@ -78,7 +79,7 @@
             {% endif %}
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" id="side-section">
           <div class="content-section" style="background-color: lightgreen; border-radius: 10px;">
             <h3>Filter Posts</h3>
             <p>You can filter posts based on the following tags.
