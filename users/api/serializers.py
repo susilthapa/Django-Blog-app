@@ -125,7 +125,7 @@ class UserLoginSerializer(ModelSerializer):
         if user_obj:
             if not user_obj.check_password(password): # checks whether password is correct or if password key is not there
                 raise ValidationError('Incorrect Credentials please try again!')
-        data["token"] = Token.objects.get_or_create(user=user_obj)
+        data["token"] = user_obj.auth_token.key #Token.objects.get_or_create(user=user_obj)[0]
         return data
 
 

@@ -9,10 +9,6 @@ from rest_framework.generics import (
     get_object_or_404
 )
 
-from rest_framework.filters import (
-    SearchFilter,
-    OrderingFilter,
-)
 
 from rest_framework.permissions import (
     AllowAny,
@@ -29,6 +25,7 @@ from .serializers import (
     UserCreateSerializer,
     UserLoginSerializer,
     UserProfileUpdateSerializer,
+    # UserProfileCreateSerializer,
 )
 
 
@@ -36,6 +33,11 @@ class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
     queryset = User.objects.all()
     permission_classes = [AllowAny]
+
+# class UserProfileCreateAPIView(CreateAPIView):
+#     serializer_class = UserProfileCreateSerializer
+#     queryset = Profile.objects.all()
+#     permission_classes = [AllowAny]
 
 
 class UserLoginAOIView(APIView):

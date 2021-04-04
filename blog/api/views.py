@@ -10,10 +10,10 @@ from rest_framework.views import APIView
 from rest_framework import generics, status
 from rest_framework.response import Response
 
-from rest_framework.filters import (
-    SearchFilter,
-    OrderingFilter,
-)
+# from rest_framework.filters import (
+#     SearchFilter,
+#     OrderingFilter,
+# )
 
 from rest_framework.permissions import (
     AllowAny,
@@ -46,21 +46,21 @@ from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 
 
 class PostListAPIView(ListAPIView):
-    # queryset = Post.objects.all()
+    queryset = Post.objects.all()
     serializer_class = PostListSerializer
-    filter_backends = [SearchFilter, OrderingFilter]
+    # filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'content', 'author__first_name']
     pagination_class = PostPageNumberPagination
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self, *args, **kwargs):
-        queryset_list = Post.objects.all()
-        username = self.request.GET.get('username')
-        # print(username)
-        if username:
-            queryset_list = queryset_list.filter(author__username__icontains=username)
-            return queryset_list
-        return queryset_list
+    # def get_queryset(self, *args, **kwargs):
+    #     queryset_list = Post.objects.all()
+    #     username = self.request.GET.get('username')
+    #     # print(username)
+    #     if username:
+    #         queryset_list = queryset_list.filter(author__username__icontains=username)
+    #         return queryset_list
+    #     return queryset_list
 
 
 # class UserPostListApiView(ListAPIView):

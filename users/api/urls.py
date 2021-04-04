@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     UserCreateAPIView,
     UserLoginAOIView,
-    UserProfileUpdateAPIView
+    UserProfileUpdateAPIView, 
+    # UserProfileCreateAPIView
 )
 from rest_framework.authtoken import views
 
@@ -15,6 +16,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('register/', UserCreateAPIView.as_view(), name='api-register'),
     path('login/', UserLoginAOIView.as_view(), name='api-login'),
+    # path('create-profile/', UserProfileCreateAPIView.as_view(), name='profile-create'),
     path('profile/', UserProfileUpdateAPIView.as_view(), name='api-profile'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
