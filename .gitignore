@@ -130,3 +130,5 @@ dmypy.json
 .pyre/
 
 first_blog_project/curl_test.py
+
+.vscode/
